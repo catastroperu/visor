@@ -2,11 +2,25 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Bienvenido...</title>
+  <title>Redirigiendo...</title>
   <script>
-    window.location.replace("https://georecon.ddns.net/visor.html");
+    // URL principal y alternativa
+    const primaryUrl = "https://georecon.ddns.net/visor.html";
+    const backupUrl  = "https://experience.arcgis.com/experience/bc9d920e480b4e71826afa2b4bb2a9a9/page/P%C3%A1gina2?draft=true";
+
+    // Intentar cargar la URL principal
+    fetch(primaryUrl, { method: "HEAD", mode: "no-cors" })
+      .then(() => {
+        // Si responde, redirigir allí
+        window.location.replace(primaryUrl);
+      })
+      .catch(() => {
+        // Si falla, usar el backup
+        window.location.replace(backupUrl);
+      });
   </script>
 </head>
 <body>
+  <p>Redirigiendo, por favor espere...</p>
 </body>
 </html>
