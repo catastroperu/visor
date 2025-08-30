@@ -1,39 +1,33 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>Redirigiendo...</title>
   <script>
-    // URLs de los visores
+    // URL principal (la que quieres mostrar siempre como oficial)
     const primaryUrl = "https://georecon.ddns.net/visor.html";
+
+    // URL alterna (oculta, solo fallback)
     const backupUrl  = "https://experience.arcgis.com/experience/bc9d920e480b4e71826afa2b4bb2a9a9/page/P%C3%A1gina2?draft=true";
 
-    // Tiempo máximo de espera (ms)
-    const TIMEOUT = 4000;
+    const TIMEOUT = 4000; // tiempo de espera (ms)
 
-    // Función para probar si un servidor responde rápido
     function testServer(url) {
       return new Promise((resolve, reject) => {
         const img = new Image();
-
         img.onload = () => resolve(true);
         img.onerror = () => reject(false);
-
-        // Usamos un parámetro dinámico para evitar cacheo
         img.src = url + "?check=" + Date.now();
-
-        // Si no responde en el tiempo dado => rechaza
         setTimeout(() => reject(false), TIMEOUT);
       });
     }
 
     async function redirect() {
       try {
-        // Primero intentamos el servidor principal
         await testServer(primaryUrl);
         window.location.replace(primaryUrl);
       } catch {
-        // Si falla o tarda demasiado, vamos al alternativo
         window.location.replace(backupUrl);
       }
     }
